@@ -19,7 +19,7 @@ public class Gun : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		if (Time.time > lastFire + firePeriod)
+		if (Input.GetMouseButtonDown(0) && Time.time > lastFire + firePeriod)
 		{
 			lastFire = Time.time;
 			fire();
@@ -32,7 +32,7 @@ public class Gun : MonoBehaviour
 		{
             GameObject p = Instantiate(pellet, transform.position, transform.rotation);
             p.transform.position += p.transform.forward * (transform.localScale.z / 2 + 0.5f);
-			p.transform.Rotate(new Vector3(Random.Range(-5f, 5f), Random.Range(-5f, 5f), Random.Range(-5f, 5f)));
+			p.transform.Rotate(new Vector3(Random.Range(-5f, 5f), Random.Range(-5f, 5f), 0));
 			p.GetComponent<Rigidbody>().velocity = p.transform.forward * velocity;
         }
 	}
