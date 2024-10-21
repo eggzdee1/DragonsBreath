@@ -4,36 +4,40 @@ using UnityEngine;
 
 public class Gun : MonoBehaviour
 {
-	public GameObject pellet;
-	public float velocity;
-	float lastFire;
-	public float firePeriod;
+	private float lastFire;
+
+	[SerializeField] private GameObject pellet;
+	[SerializeField] private float velocity;
+	[SerializeField] private float firePeriod;
+    [SerializeField] private float dmg;
+    [SerializeField] private float spread;
+    [SerializeField] private float pellets;
 
 	// Start is called before the first frame update
 	void Start()
 	{
-		lastFire = Time.time;
-		//fire();
+		lastFire = -100;
 	}
 
 	// Update is called once per frame
 	void Update()
 	{
-		if (Input.GetMouseButtonDown(0) && Time.time > lastFire + firePeriod)
-		{
-			lastFire = Time.time;
-			fire();
-		}
+		
 	}
 
-	void fire()
+	public void fire()
 	{
-		for (int i = 0; i < 9; i++)
-		{
-            GameObject p = Instantiate(pellet, transform.position, transform.rotation);
-            p.transform.position += p.transform.forward * (transform.localScale.z / 2 + 0.5f);
-			p.transform.Rotate(new Vector3(Random.Range(-5f, 5f), Random.Range(-5f, 5f), 0));
-			p.GetComponent<Rigidbody>().velocity = p.transform.forward * velocity;
+        if (Time.time > lastFire + firePeriod)
+        {
+            lastFire = Time.time;
+            for (int i = 0; i < pellets; i++)
+            {
+                GameObject p = Instantiate(pellet, transform.position, transform.rotation);
+                p.transform.position += p.transform.forward * (transform.localScale.z / 2 + 0.5f);
+                p.transform.Rotate(new Vector3(Random.Range(-spread, spread), Random.Range(-spread, spread), 0));
+                p.GetComponent<Rigidbody>().velocity = p.transform.forward * velocity;
+                p.GetComponent<PelletBehavior>().dmg = dmg;
+            }
         }
 	}
 }

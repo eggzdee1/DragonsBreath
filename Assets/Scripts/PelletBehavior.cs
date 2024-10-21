@@ -3,11 +3,12 @@ using UnityEngine;
 
 public class PelletBehavior : MonoBehaviour
 {
-    public float birthday;
-    public float lifespan;
-    public bool collided;
-    Light glow;
-    Rigidbody rb;
+    private float birthday;
+    private float lifespan;
+    private bool collided;
+    private Light glow;
+    private Rigidbody rb;
+    public float dmg;
 
     // Start is called before the first frame update
     void Start()
@@ -31,12 +32,14 @@ public class PelletBehavior : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        //Destroy(gameObject,0.05f);
-        /*
-        transform.Rotate(new Vector3(UnityEngine.Random.Range(-5f, 5f), UnityEngine.Random.Range(-5f, 5f), 0));
-		rb.velocity = transform.forward * rb.velocity.magnitude;
-        */
-        //rb.velocity /= 2;
+        EnemyController e = collision.gameObject.GetComponent<EnemyController>();
+        PlayerController p = collision.gameObject.GetComponent<PlayerController>();
+        if (!collided)
+        {
+            if (e != null) e.TakeDamage(dmg);
+            if (p != null) p.TakeDamage(dmg);
+        }
+
         rb.drag *= 2;
         collided = true;
     }

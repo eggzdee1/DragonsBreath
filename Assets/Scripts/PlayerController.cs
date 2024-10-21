@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float maxSpeed;
-    public float forceMultiplier;
+    [SerializeField] private float health;
+    [SerializeField] private float armor;
+    [SerializeField] private float maxSpeed;
+    [SerializeField] private float forceMultiplier;
     private Vector3 force;
     private Rigidbody rb;
 
@@ -20,10 +22,22 @@ public class PlayerController : MonoBehaviour
     {
         force.x = Input.GetAxisRaw("Horizontal") * Mathf.Max(maxSpeed - rb.velocity.magnitude, 0);
         force.z = Input.GetAxisRaw("Vertical") * Mathf.Max(maxSpeed - rb.velocity.magnitude, 0);
+
+        if (Input.GetMouseButtonDown(0))
+		{
+            Gun gun = GetComponentInChildren<Gun>();
+			gun.fire();
+		}
     }
 
     void FixedUpdate()
     {
         rb.AddForce(force.normalized * forceMultiplier, ForceMode.Impulse);
+    }
+
+    public void TakeDamage(float dmg)
+    {
+        health -= dmg / (1 + armor);
+        if (health <= 0) Debug.Log("LOVING HUSBAND");
     }
 }
