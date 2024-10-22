@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private float detectionRadius;
     [SerializeField] private float reactionTime;
     [SerializeField] private float rotationVelocity;
+    [SerializeField] private NavMeshAgent agent;
     private int detectionState;
     private float lastDetection;
     
@@ -54,7 +56,9 @@ public class EnemyController : MonoBehaviour
             {
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationVelocity * Time.deltaTime);
             }
+            agent.SetDestination(transform.position);
         }
+        else agent.SetDestination(jw.transform.position);
     }
 
     public void TakeDamage(float dmg)
