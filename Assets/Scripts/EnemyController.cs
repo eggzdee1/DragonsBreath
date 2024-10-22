@@ -7,13 +7,14 @@ public class EnemyController : MonoBehaviour
 {
     [SerializeField] private float health;
     [SerializeField] private float armor;
-    [SerializeField] private GameObject jw;
+    public GameObject jw;
     [SerializeField] private float detectionRadius;
     [SerializeField] private float reactionTime;
     [SerializeField] private float rotationVelocity;
     [SerializeField] private NavMeshAgent agent;
     private int detectionState;
     private float lastDetection;
+    [SerializeField] private GameObject bloodEffect;
     
     // Start is called before the first frame update
     void Start()
@@ -64,7 +65,11 @@ public class EnemyController : MonoBehaviour
     public void TakeDamage(float dmg)
     {
         health -= dmg / (1 + armor);
-        if (health <= 0) Destroy(gameObject);
+        if (health <= 0) 
+        {
+            Instantiate(bloodEffect, transform.position, transform.rotation);
+            Destroy(gameObject);
+        }
     }
 
     bool LOS()

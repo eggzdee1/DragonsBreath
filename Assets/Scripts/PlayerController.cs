@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -38,6 +39,9 @@ public class PlayerController : MonoBehaviour
     public void TakeDamage(float dmg)
     {
         health -= dmg / (1 + armor);
-        if (health <= 0) Debug.Log("LOVING HUSBAND");
+        if (health <= 0)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        }
     }
 }
