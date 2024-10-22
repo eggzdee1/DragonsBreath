@@ -15,6 +15,9 @@ public class EnemyController : MonoBehaviour
     private int detectionState;
     private float lastDetection;
     [SerializeField] private GameObject bloodEffect;
+    public bool seeking;
+    [SerializeField] private int scoreVal;
+    private bool dead;
     
     // Start is called before the first frame update
     void Start()
@@ -31,6 +34,7 @@ public class EnemyController : MonoBehaviour
         {
             detectionState = 1;
             lastDetection = Time.time;
+            seeking = true;
         }
         if (!los)
         {
@@ -59,15 +63,21 @@ public class EnemyController : MonoBehaviour
             }
             agent.SetDestination(transform.position);
         }
-        else agent.SetDestination(jw.transform.position);
+        else if (seeking)
+        {
+            agent.SetDestination(jw.transform.position);
+        }
     }
 
     public void TakeDamage(float dmg)
     {
+        seeking = true;
         health -= dmg / (1 + armor);
         if (health <= 0) 
         {
             Instantiate(bloodEffect, transform.position, transform.rotation);
+            if (!dead) ScoreManager.score += scoreVal;
+            dead = true;
             Destroy(gameObject);
         }
     }

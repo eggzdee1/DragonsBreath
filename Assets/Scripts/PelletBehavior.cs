@@ -9,6 +9,7 @@ public class PelletBehavior : MonoBehaviour
     private Light glow;
     private Rigidbody rb;
     public float dmg;
+    public bool isDragon;
 
     // Start is called before the first frame update
     void Start()
@@ -39,6 +40,8 @@ public class PelletBehavior : MonoBehaviour
             if (e != null) e.TakeDamage(dmg);
             if (p != null) p.TakeDamage(dmg);
         }
+
+        if (!isDragon) Destroy(gameObject);
 
         rb.drag *= 2;
         collided = true;
